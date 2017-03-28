@@ -1,0 +1,104 @@
+<html>
+
+<head>
+  <style>
+  .title {
+    float: left;
+    font-size: 13px;
+    margin: 0 5px 0 0;
+  }
+  
+  .fromstyle {
+    float: left;
+  }
+  
+  .fromstyle p {
+    margin: 0;
+    font-size: 11px;
+  }
+  
+  .style2 {
+    outline-color: red;
+  }
+  
+  .style3 {
+    outline-color: green;
+  }
+  </style>
+  <script type="text/javascript">
+  function validate_required(field) {
+    with(field) {
+      var nlength = value.replace(/[^\u0000-\u007f]/g, "\u0061\u0061").length;
+      if (value == null || value == "") {
+        document.getElementById("nametext").innerHTML = "姓名不能为空";
+        document.getElementById("nametext").style.color = "red";
+        return 0
+      } else if (nlength < 4 || nlength > 16) {
+        document.getElementById("nametext").innerHTML = "名称长度错误";
+        document.getElementById("nametext").style.color = "red";
+        return 0
+
+      } else {
+        document.getElementById("nametext").innerHTML = "名称格式正确";
+        document.getElementById("nametext").style.color = "green";
+        return -1
+      }
+    }
+  }
+
+  function validate_form(thisform) {
+    var obj = document.getElementById("inputstyle");
+    with(thisform) {
+      if (validate_required(username) == 0) {
+        username.focus();
+        obj.setAttribute("class", "style2");
+        return false
+      } else if (validate_required(username) == -1) {
+        obj.setAttribute("class", "style3");
+        return false
+      }
+    }
+  }
+  </script>
+</head>
+
+<body>
+  <span class="title">名称:</span>
+  <form class="fromstyle" id="fstyle" action="submitpage.html" onsubmit="return validate_form(this)" method="post">
+    <input id="inputstyle" type="text" name="username" size="30">
+    <input type="submit" value="验证">
+    <p id="nametext">必填，长度为4~16个字符</p>
+  </form>
+</body>
+
+</html>
+<!-- <script type="text/javascript">
+function validate_email(field, alerttxt) //这个函数用来验证email的格式是否满足xxx@xxx.xxx的格式，其中要求@前面必须要至少一个字符，@与.之间至少要有一个字符
+{
+  with(field) //使用with (XXX)语句是指定默认对象，这样在访问这个HTML元素（就是这里的field)的值的时候，就不需要指定对象了，可以直接使用value.indexOf。否则的话，需要field.value.indexOf
+    {
+      apos = value.indexOf("@") //找到第一个@的位置。如果找不到的话,apos值为-1,找到的话就是@在字符串里面的以0开始的位置索引
+      dotpos = value.lastIndexOf(".") //找到最后一个.的位置
+      if (apos < 1 || dotpos - apos < 2) //如果找不到@或者@是第一个字符(apos<1)，或者@之后没有.或者@与.之间没有任何字符(dotpos-apos<2)
+      {
+        alert(alerttxt);
+        return false
+      } //弹出对话框显示错误消息并返回假表明验证email格式失败
+      else {
+        return true
+      } //否则返回真
+    }
+}
+
+function validate_form(thisform) //这个函数用来在表单提交时对表单做验证，通常的使用方式是表单里面有个提交按钮在点击时调用这个函数，如下例所示<input type="submit" name="sub" value="提交" onclick="validate_form(this)"/>，当这个函数返回假的时候，表单不会提交
+{
+  with(thisform) //同上面的with (field)
+    {
+      if (validate_email(email, "Not a valid e-mail address!") == false) //调用validate_email来验证表单中的email这个字段 ，判断是否失败 
+      {
+        email.focus();
+        return false
+      } //如果失败的话，让email获得焦点，同时返回假使的表单不提交
+    }
+}
+</script> -->
