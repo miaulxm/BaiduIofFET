@@ -1,0 +1,79 @@
+<!-- 任务三：表单（三）联动 -->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>表单联动</title>
+  <style type="text/css">
+  select {
+    width: 150px;
+  }
+  </style>
+</head>
+
+<body onload="load()">
+  <form action="" method="get" onchange="show()">
+    <label>
+      <input name="Fruit" type="radio" value="stu" />在校生 </label>
+    <label>
+      <input name="Fruit" type="radio" value="nstu" />非在校生 </label>
+  </form>
+  <div class="cSchool" id="cSchool" style="display:none;">
+    学校
+    <select class='city' id='city' onchange='changeSchool()'>
+      <option value=''>北京</option>
+    </select>
+    <select class='school' id='school'>
+      <option value=''>北京大学</option>
+    </select>
+  </div>
+  <div class="cWork" id="cWork" style="display:none;">
+    就业单位
+    <input type="" name="" />
+    </select>
+  </div>
+  <script type="text/javascript">
+  var city = document.getElementById("city");
+  var school = document.getElementById("school");
+  var arr_city = new Array(new Option("北京", 'bj'), new Option("厦门", "xm"), new Option("南京", "nj"));
+  var arr_school = new Array();
+  //二维数组
+  arr_school[0] = new Array(new Option("北京大学", 'bjdx'));
+  arr_school[1] = new Array(new Option("厦门大学", 'xmdx'), new Option("集美大学", 'jmdx'));
+  arr_school[2] = new Array(new Option("南京大学", 'nndx'), new Option("东南大学", 'dndx'), new Option("南京邮电大学", "njyddx"));
+
+  /*单选显示不同内容*/
+  function show() {
+    var options = document.getElementsByName("Fruit");
+    for (var i = 0; i < options.length; i++) {
+      if (options[i].checked && options[i].value == "stu") {
+        document.getElementById("cWork").style.display = "none";
+        document.getElementById("cSchool").style.display = "block";
+      } else if (options[i].checked && options[i].value == "nstu") {
+        document.getElementById("cSchool").style.display = "none";
+        document.getElementById("cWork").style.display = "block";
+
+      }
+    }
+  }
+  /*载入城市列表*/
+  function load() {
+    for (var i = 0; i < arr_city.length; i++) {
+      city.options[i] = arr_city[i];
+    }
+  }
+  /*根据所选城市显示对应的学校列表*/
+  function changeSchool() {
+    //清空上次的选项
+    school.options.length = 0;
+    //获取下拉列表选中的索引
+    var index = city.selectedIndex;
+    //根据索引给option赋值
+    for (var i = 0; i < arr_school[index].length; i++) {
+      school.options[i] = arr_school[index][i];
+    }
+  }
+  </script>
+</body>
+
+</html>
