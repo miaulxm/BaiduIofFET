@@ -26,6 +26,7 @@
   }
   </style>
   <script type="text/javascript">
+  /*检验value*/
   function validate_required(field) {
     with(field) {
       var nlength = value.replace(/[^\u0000-\u007f]/g, "\u0061\u0061").length;
@@ -45,7 +46,7 @@
       }
     }
   }
-
+  /*改变样式*/
   function validate_form(thisform) {
     var obj = document.getElementById("inputstyle");
     with(thisform) {
