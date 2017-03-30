@@ -1,0 +1,211 @@
+<html>
+
+<head>
+  <style>
+  .title {
+    float: left;
+    font-size: 13px;
+    margin: 0 5px 0 0;
+  }
+  
+  .fromstyle {
+    float: left;
+  }
+  
+  .fromstyle p {
+    margin: 0;
+    font-size: 11px;
+  }
+  
+  .fromstyle div {
+    margin: 0 0 5px 0;
+  }
+  
+  .style2 {
+    border-color: red;
+  }
+  
+  .style3 {
+    border-color: green;
+  }
+  
+  .wei {
+    display: inline-block;
+  }
+  
+  .look {
+    display: block;
+  }
+  
+  .nolook {
+    display: none;
+  }
+  </style>
+  <script type="text/javascript">
+  /*检验value*/
+  function validate_required(field, thisinput) {
+    var name = thisinput.name;
+    var obj = thisinput.nextSibling;
+    while (obj.nodeType != 1) {
+      obj = obj.nextSibling;
+    }
+    switch (name) {
+      /*用户名*/
+      case "username":
+        var nlength = field.value.replace(/[^\u0000-\u007f]/g, "\u0061\u0061").length;
+        if (field.value == null || field.value == "") {
+          obj.innerHTML = "姓名不能为空";
+          obj.style.color = "red";
+          return 0
+        } else if (nlength < 4 || nlength > 16) {
+          obj.innerHTML = "名称长度错误";
+          obj.style.color = "red";
+          return 0
+
+        } else {
+          obj.innerHTML = "名称格式正确";
+          obj.style.color = "green";
+          return -1
+        }
+        /*密码*/
+      case "password1":
+        var nlength = field.value.replace(/[^\u0000-\u007f]/g, "\u0061\u0061").length;
+        if (field.value == null || field.value == "") {
+          obj.innerHTML = "密码不能为空";
+          obj.style.color = "red";
+          return 0
+        } else if (nlength < 4 || nlength > 16) {
+          obj.innerHTML = "密码长度错误";
+          obj.style.color = "red";
+          return 0
+
+        } else {
+          obj.innerHTML = "密码可用";
+          obj.style.color = "green";
+          return -1
+        }
+        /*第二次输入密码*/
+      case "password2":
+        //var pw = document.getElementById("inputstyle1").value;
+        var pw = document.getElementsByName("password1")[0].value;
+        if (field.value == pw && pw) {
+          obj.innerHTML = "密码输入一致";
+          obj.style.color = "green";
+          return -1
+        } else {
+          obj.innerHTML = "密码输入不一致";
+          obj.style.color = "red";
+          return 0
+        }
+        /* 邮箱*/
+      case "email":
+        var apos = field.value.indexOf("@");
+        var dotpos = field.value.lastIndexOf(".");
+        if (apos < 1 || dotpos - apos < 2) {
+          obj.innerHTML = "邮箱格式错误 ";
+          obj.style.color = "red";
+          return 0
+        } else {
+          obj.innerHTML = "邮箱格式正确 ";
+          obj.style.color = "green";
+          return -1
+        }
+        /*手机号*/
+      case "mobile":
+        if (field.value.length == 11 && !isNaN(field.value)) {
+          obj.innerHTML = "手机格式正确";
+          obj.style.color = "green";
+          return -1
+        } else {
+          obj.innerHTML = "手机格式错误";
+          obj.style.color = "red";
+          return 0
+        }
+      default:
+        //console.log(name);
+    }
+
+
+  }
+
+  /*改变框样式*/
+  function validate_form(thisform, thisinput) {
+    var tem = validate_required(thisform[thisinput.name], thisinput);
+    if (tem == 0) {
+      thisinput.setAttribute("class", "style2");
+      return false
+    } else if (tem == -1) {
+      thisinput.setAttribute("class", "style3");
+      return true
+    }
+  }
+  /*onfocus函数，添加样式*/
+  function doClickStyle(obj, objclassname) {
+    var obj1 = obj.nextSibling;
+    while (obj1.nodeType != 1) {
+      obj1 = obj1.nextSibling;
+    }
+    obj1.className = objclassname;
+  }
+  /*onsubmit执行函数*/
+  function form_com(thisform) {
+    var result = true,
+      obj;
+    /*遍历输入框数据进行验证*/
+    for (var i = 0; i < thisform.childNodes.length; i++) {
+      if (thisform.childNodes[i].nodeType == 1 && thisform.childNodes[i].type != "submit") {
+        obj = thisform.childNodes[i].childNodes[3].childNodes[1];
+        result = validate_form(fstyle, obj) && result;
+        doClickStyle(obj, 'look');
+      }
+    }
+    if (result) {
+      setTimeout('alert("提交正确")', 10);
+    } else {
+      setTimeout('alert("提交错误")', 10);
+    }
+    return false
+  }
+  </script>
+</head>
+
+<body>
+  <form class="fromstyle" id="fstyle" action="submitpage.html" onsubmit="return form_com(this)" method="post">
+    <div>
+      <span class="title">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp 名称:</span>
+      <div class="wei">
+        <input onfocus="doClickStyle(this,'look')" onblur="validate_form(fstyle,this)" id="inputstyle" type="text" name="username" size="30">
+        <p class="nolook">必填，长度为4~16个字符</p>
+      </div>
+    </div>
+    <div>
+      <span class="title">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp 密码:</span>
+      <div class="wei">
+        <input onfocus="doClickStyle(this,'look')" onblur="validate_form(fstyle,this)" id="inputstyle1" type="text" name="password1" size="30">
+        <p class="nolook">必填，长度为4~16个字符</p>
+      </div>
+    </div>
+    <div>
+      <span class="title">密码确认:</span>
+      <div class="wei">
+        <input onfocus="doClickStyle(this,'look')" onblur="validate_form(fstyle,this)" id="inputstyle" type="text" name="password2" size="30">
+        <p class="nolook">两次输入相同</p>
+      </div>
+    </div>
+    <div>
+      <span class="title">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp 邮箱:</span>
+      <div class="wei">
+        <input onfocus="doClickStyle(this,'look')" onblur="validate_form(fstyle,this)" id="inputstyle" type="text" name="email" size="30">
+        <p class="nolook">注意格式正确</p>
+      </div>
+    </div>
+    <div>
+      <span class="title">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp 手机:</span>
+      <div class="wei">
+        <input onfocus="doClickStyle(this,'look')" onblur="validate_form(fstyle,this)" id="inputstyle" type="text" name="mobile" size="30">
+        <p class="nolook"></p>
+      </div>
+    </div>
+    <input type="submit" value="验证">
+  </form>
+</body>
