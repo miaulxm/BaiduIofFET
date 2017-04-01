@@ -1,0 +1,107 @@
+<!-- 任务七：UI组件之排序表格 -->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>ul表格</title>
+  <style>
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 500px;
+  }
+  
+  li {
+    display: block;
+    float: left;
+    width: 19%;
+    border: 1px solid red;
+    text-indent: 2em;
+  }
+  
+  .th li {
+    background: #F1FADE;
+  }
+  </style>
+  <script>
+  var arr_student = new Array();
+  arr_student[0] = new Array("阿三", 87, 78, 70);
+  arr_student[1] = new Array("小陈", 88, 75);
+  arr_student[2] = new Array("小红", 86, 80, 80);
+  arr_student[3] = new Array("小方", 83, 90, 80, 45);
+  //var nodes = document.getElementById("mytable");
+  //var newnode = document.createElement("ul");
+  var length = arr_student.length;
+  var data = 4;
+
+  /*载入表格数据，缺失数据0补足，多余数据删除*/
+  function onload() {
+    for (var i = 0; i < length; i++) {
+      if (arr_student[i].length < data) {
+        for (var j = arr_student[i].length; j < data; j++) {
+          arr_student[i][j] = 0;
+        }
+      } else if (arr_student[i].length > data) {
+        arr_student[i].length = data;
+      }
+      arr_student[i][4] = arr_student[i][1] + arr_student[i][2] + arr_student[i][3];
+      additem(arr_student[i]);
+    }
+  }
+
+  /*往表格中添加对应项*/
+  function additem(newtable, sum) {
+    var newnode = document.createElement("ul");
+    for (var i = 0; i < 5; i++) {
+      var newchild = document.createElement("li");
+      newchild.innerHTML = newtable[i];
+      newnode.appendChild(newchild);
+    }
+    document.body.appendChild(newnode);
+  }
+
+  /*进行冒泡排序*/
+  function sort(thissort) {
+    var index = thissort.parentNode.value,
+      temp, j = length;
+    //console.log(arr_student[0][index]);
+    while (j > 0) {
+      for (var i = 0; i < length - 1; i++) {
+        //console.log(arr_student[i+1][index]);
+        if (arr_student[i][index] > arr_student[i + 1][index]) {
+          temp = arr_student[i];
+          arr_student[i] = arr_student[i + 1];
+          arr_student[i + 1] = temp;
+        }
+      }
+      j--;
+    }
+    del();
+    onload();
+  }
+
+  /*删除表格中的数据*/
+  function del() {
+    for (var i = document.body.childNodes.length - 1; i >= 0; i--) {
+      if (document.body.childNodes[i].nodeType != 1 || document.body.childNodes[i].className == "th") {
+        continue;
+      } else {
+        document.body.removeChild(document.body.childNodes[i]);
+      }
+    }
+  }
+  </script>
+</head>
+
+<body onload="onload()">
+  <ul class="th">
+    <li>姓名</li>
+    <li value="1">语文<span onclick="sort(this)"> *</span></li>
+    <li value="2">数学<span onclick="sort(this)"> *</span></li>
+    <li value="3">英语<span onclick="sort(this)"> *</span></li>
+    <li value="4">总分<span onclick="sort(this)"> *</span></li>
+  </ul>
+</body>
+
+</html>
